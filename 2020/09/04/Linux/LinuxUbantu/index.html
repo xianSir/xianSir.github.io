@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ubabtu 配置Java环境 | MRS-SEVEN-X</title><meta name="description" content="ubabtu 配置Java环境 :jdk mysql tomcat zookeeper redis"><meta name="keywords" content="Linux"><meta name="author" content="MRS-SEVEN-X"><meta name="copyright" content="MRS-SEVEN-X"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://xiansir.github.io/2020/09/04/Linux/LinuxUbantu/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><meta name="yandex-verification" content="{&quot;theme_color&quot;:{&quot;enable&quot;:false,&quot;main&quot;:&quot;#49B1F5&quot;,&quot;paginator&quot;:&quot;#00c4b6&quot;,&quot;button_hover&quot;:&quot;#FF7242&quot;,&quot;text_selection&quot;:&quot;#00c4b6&quot;,&quot;link_color&quot;:&quot;#99a9bf&quot;,&quot;meta_color&quot;:&quot;#858585&quot;,&quot;hr_color&quot;:&quot;#A4D8FA&quot;,&quot;code_foreground&quot;:&quot;#F47466&quot;,&quot;code_background&quot;:&quot;rgba(27, 31, 35, .05)&quot;,&quot;toc_color&quot;:&quot;#00c4b6&quot;,&quot;blockquote_padding_color&quot;:&quot;#49b1f5&quot;,&quot;blockquote_background_color&quot;:&quot;#49b1f5&quot;}}"/><meta property="og:type" content="article"><meta property="og:title" content="ubabtu 配置Java环境"><meta property="og:url" content="https://xiansir.github.io/2020/09/04/Linux/LinuxUbantu/"><meta property="og:site_name" content="MRS-SEVEN-X"><meta property="og:description" content="ubabtu 配置Java环境 :jdk mysql tomcat zookeeper redis"><meta property="og:image" content="https://xiansir.github.io/img/Linux2.jpg"><meta property="article:published_time" content="2020-09-04T03:39:31.705Z"><meta property="article:modified_time" content="2020-09-04T03:43:06.387Z"><meta name="twitter:card" content="summary"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '4.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime: '',
+  date_suffix: {"one_hour":"刚刚","hours":"小时前","day":"天前"},
+  copyright: {"limitCount":50,"languages":{"author":"作者: MRS-SEVEN-X","link":"链接: ","source":"来源: MRS-SEVEN-X","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+    },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: false,
+  postUpdate: '2020-09-04 11:43:06'
+}</script><noscript><style type="text/css">
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 4.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">21</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">16</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">14</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><header class="post-bg" id="page-header" style="background-image: url(/img/Linux2.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">MRS-SEVEN-X</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">ubabtu 配置Java环境</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-04T03:39:31.705Z" title="发表于 2020-09-04 11:39:31">2020-09-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-04T03:43:06.387Z" title="更新于 2020-09-04 11:43:06">2020-09-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/">Linux</a></span></div><div class="meta-secondline"> </div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>#安装JDK步骤<br>    1、先从网上下载jdk(jdk-7u1-linux-i586.rpm)，下载地址:<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk-7u1-download-513651.html，下载后放在/home目录中，当然其它地方也行。" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/jdk-7u1-download-513651.html，下载后放在/home目录中，当然其它地方也行。</a><br>    2、进入安装目录 #cd /home #cp jdk-7u1-linux-i586.rpm /usr/local #cd /usr/local 给所有用户添加可执行的权限<br>    #rpm -ivh jdk-7u1-linux-i586.rpm<br>    或<br>    1. 解压文件 tar zxvf fileName<br>    3、设置环境变量<br>    #vi /etc/profile<br>    打开后，在文档最下方加上以下环境变量配置代码：<br>    export JAVA_HOME=/usr/java/javajdk1.7.0_01<br>    export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar<br>    export PATH=$JAVA_HOME/bin:$PATH<br>    注意：export PATH=$JAVA_HOME/bin:$PATH，注意将$PATH放到最后。以免造成新旧版本问题。<br>    编辑profile文档立即生效  source /etc/profile<br>    4、检查JDK是否安装成功。 #java -<br>    version 如果看到JVM版本及相关信息，即安装成功！<br>#安装mysql<br>傻瓜式教程:</p>
+<pre><code>#安装mysql
+apt  install mysql-server
+#检查没mysql是否安装成功
+netstat -tap | grep mysql
+#登录mysql
+mysql -u root -p
+了确保数据库的安全性和正常运转，对数据库进行初始化操作。这个初始化操作涉及下面5个步骤。
+（1）安装验证密码插件。
+（2）设置root管理员在数据库中的专有密码。
+（3）随后删除匿名账户，并使用root管理员从远程登录数据库，以确保数据库上运行的业务的安全性。
+（4）删除默认的测试数据库，取消测试数据库的一系列访问权限。
+（5）刷新授权列表，让初始化的设定立即生效。
+对于上述数据库初始化的操作步骤，在下面的输出信息旁边我做了简单注释。
+root@ubuntu-virtual-machine:~# mysql_secure_installation
+
+Securing the MySQL server deployment.
+Connecting to MySQL using a blank password.
+VALIDATE PASSWORD PLUGIN can be used to test.test passwords
+and improve security. It checks the strength of password
+and allows the users to set only those passwords which are
+secure enough. Would you like to setup VALIDATE PASSWORD plugin?    # 要安装验证密码插件吗?
+Press y|Y for Yes, any other key for No: N    # 这里我选择N
+Please set the password for root here.
+New password:   # 输入要为root管理员设置的数据库密码
+Re-enter new password:   # 再次输入密码
+By default, a MySQL installation has an anonymous user,
+allowing anyone to log into MySQL without having to have
+a user account created for them. This is intended only for
+testing, and to make the installation go a bit smoother.
+You should remove them before moving into a production
+environment.
+Remove anonymous users? (Press y|Y for Yes, any other key for No) : y     # 删除匿名账户
+Success.
+Normally, root should only be allowed to connect from
+&apos;localhost&apos;. This ensures that someone cannot guess at
+the root password from the network.
+Disallow root login remotely? (Press y|Y for Yes, any other key for No) : N    # 禁止root管理员从远程登录，这里我没有禁止
+... skipping.
+By default, MySQL comes with a database named &apos;test.test&apos; that
+anyone can access. This is also intended only for testing,
+and should be removed before moving into a production
+environment.
+Remove test.test database and access to it? (Press y|Y for Yes, any other key for No) : y   # 删除test数据库并取消对它的访问权限
+- Dropping test.test database...
+Success.
+- Removing privileges on test.test database...
+Success.
+Reloading the privilege tables will ensure that all changes
+made so far will take effect immediately.
+Reload privilege tables now? (Press y|Y for Yes, any other key for No) : y   # 刷新授权表，让初始化后的设定立即生效
+Success.
+All done!
+#检查mysql服务状态：
+systemctl status mysql
+
+#再次用mysql -u root -p命令，Enter password:处输入刚设置的密码，回车，就能够进入mysql数据库。
+#使用 use mysql; 命令打开mysql命名的数据库，显示当前数据库的表：show tables;
+#查询user表里的数据：select * from user;（user表里是mysql数据库的所有账户信息）
+
+#配置mysql允许远程访问，首先编辑 /etc/mysql/mysql.conf.d/mysqld.cnf 配置文件：
+
+vim /etc/mysql/mysql.conf.d/mysqld.cnf
+
+注释掉bind-address          = 127.0.0.1
+
+保存退出，然后进入mysql数据库，执行授权命令：
+
+mysql -u root -p
+mysql&gt; grant all on *.* to root@&apos;%&apos; identified by &apos;你的密码&apos; with grant option;
+mysql&gt; flush privileges;    # 刷新权限
+mysql&gt; exit
+#重启mysql：
+systemctl restart mysql</code></pre><p>#tomcat<br>    1.下载Linux tomcat<br>    2.解压文件<br>        tar zxvf fieName<br>    3.修改Linux环境变量文件<br>        vim /etc/profile<br>        尾部添加:<br>            export TOMCAT_HOME=/usr/software/apache-tomcat-9.0.8<br>    4.完成  source /etc/profile 使修改的环境变量生效<br>#zookeeper<br>    1.下载Linux zookeeper<br>    2.解压文件<br>        tar zxvf fieName<br>    3.修改Linux环境变量文件<br>        vim /etc/profile<br>        尾部添加:<br>            export ZOOKEEPER_HOME=/usr/software/zookeeper<br>            export PATH=$ZOOKEEPER_HOME/bin:$PATH<br>    4.完成  source /etc/profile 使修改的环境变量生效<br>    5.启动  在bin目录下 zkServer.sh start<br>#redis<br>    1.下载<br>    wget <a href="http://download.redis.io/releases/redis-4.0.8.tar.gz" target="_blank" rel="noopener">http://download.redis.io/releases/redis-4.0.8.tar.gz</a><br>    2.  进行编译  可能需要安装 make gcc<br>        {<br>        安装gcc yum/apt install gcc<br>        安装make  apt install make<br>        }<br>        make<br>        cd src<br>        make install PREFIX=/usr/local/redis(安装目录)</p>
+<pre><code>#配置redis为后台启动
+　　vi /usr/local/redis/etc/redis.conf //将daemonize no 改成daemonize yes
+#解决不能连接  进入redis.conf 主调 bind  修改protect-mode no
+#添加密码
+去掉注释 requirepass ****(密码)</code></pre></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">MRS-SEVEN-X</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xiansir.github.io/2020/09/04/Linux/LinuxUbantu/">https://xiansir.github.io/2020/09/04/Linux/LinuxUbantu/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xiansir.github.io" target="_blank">MRS-SEVEN-X</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post_share"><div class="social-share" data-image="/img/Linux2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/09/04/NodeJs/"><img class="prev-cover" src="/img/wen3.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Node安装</div></div></a></div><div class="next-post pull-right"><a href="/2020/08/21/Framework/Minio/"><img class="next-cover" src="/img/avatar.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MinIO 简单介绍及使用</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/05/16/Linux/DockerCentos/" title="docker 安装教程简介"><img class="cover" src="/img/docker.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-16</div><div class="title">docker 安装教程简介</div></div></a></div><div><a href="/2020/06/09/Linux/Shell/" title="Linux 安装软件环境shell脚本示例"><img class="cover" src="/img/bat.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-06-09</div><div class="title">Linux 安装软件环境shell脚本示例</div></div></a></div><div><a href="/2020/01/15/Linux/LinuxCentos/" title="centos 配置Java环境"><img class="cover" src="/img/Linux2.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-15</div><div class="title">centos 配置Java环境</div></div></a></div><div><a href="/2020/01/05/Linux/Linux/" title="Linux简单介绍及常用命令"><img class="cover" src="/img/linux.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-05</div><div class="title">Linux简单介绍及常用命令</div></div></a></div></div></div></article></main><footer id="footer" style="background-image: url(/img/Linux2.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2020 By MRS-SEVEN-X</div><div class="framework-info"><span>框架 </span><a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my blog!</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script></div></body></html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>centos 配置Java环境 | MRS-SEVEN-X</title><meta name="description" content="centos 配置Java环境以及常见问题"><meta name="keywords" content="Linux"><meta name="author" content="MRS-SEVEN-X"><meta name="copyright" content="MRS-SEVEN-X"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://xiansir.github.io/2020/01/15/Linux/LinuxCentos/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><meta name="yandex-verification" content="{&quot;theme_color&quot;:{&quot;enable&quot;:false,&quot;main&quot;:&quot;#49B1F5&quot;,&quot;paginator&quot;:&quot;#00c4b6&quot;,&quot;button_hover&quot;:&quot;#FF7242&quot;,&quot;text_selection&quot;:&quot;#00c4b6&quot;,&quot;link_color&quot;:&quot;#99a9bf&quot;,&quot;meta_color&quot;:&quot;#858585&quot;,&quot;hr_color&quot;:&quot;#A4D8FA&quot;,&quot;code_foreground&quot;:&quot;#F47466&quot;,&quot;code_background&quot;:&quot;rgba(27, 31, 35, .05)&quot;,&quot;toc_color&quot;:&quot;#00c4b6&quot;,&quot;blockquote_padding_color&quot;:&quot;#49b1f5&quot;,&quot;blockquote_background_color&quot;:&quot;#49b1f5&quot;}}"/><meta property="og:type" content="article"><meta property="og:title" content="centos 配置Java环境"><meta property="og:url" content="https://xiansir.github.io/2020/01/15/Linux/LinuxCentos/"><meta property="og:site_name" content="MRS-SEVEN-X"><meta property="og:description" content="centos 配置Java环境以及常见问题"><meta property="og:image" content="https://xiansir.github.io/img/Linux2.jpg"><meta property="article:published_time" content="2020-01-14T16:00:00.000Z"><meta property="article:modified_time" content="2020-09-04T03:43:43.899Z"><meta name="twitter:card" content="summary"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '4.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime: '',
+  date_suffix: {"one_hour":"刚刚","hours":"小时前","day":"天前"},
+  copyright: {"limitCount":50,"languages":{"author":"作者: MRS-SEVEN-X","link":"链接: ","source":"来源: MRS-SEVEN-X","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+    },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-09-04 11:43:43'
+}</script><noscript><style type="text/css">
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 4.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">21</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">16</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">14</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#解决yum命令无法连接镜像资源"><span class="toc-number">1.</span> <span class="toc-text">解决yum命令无法连接镜像资源:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#更换yum镜像"><span class="toc-number">2.</span> <span class="toc-text">更换yum镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#同步时间"><span class="toc-number">3.</span> <span class="toc-text">同步时间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#配置网络"><span class="toc-number">4.</span> <span class="toc-text">配置网络</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#解决ifconfig不能使用"><span class="toc-number">5.</span> <span class="toc-text">解决ifconfig不能使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#普通用户切换root"><span class="toc-number">6.</span> <span class="toc-text">普通用户切换root</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#防火墙"><span class="toc-number">7.</span> <span class="toc-text">防火墙</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SSH"><span class="toc-number">8.</span> <span class="toc-text">SSH</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装-配置jdk"><span class="toc-number">9.</span> <span class="toc-text">安装 配置jdk</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装mysql-注安装-yum-y-install-autoconf"><span class="toc-number">10.</span> <span class="toc-text">安装mysql  注安装 yum -y install autoconf</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用本地文件安装mysql"><span class="toc-number">11.</span> <span class="toc-text">使用本地文件安装mysql</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装rabbitmq"><span class="toc-number">12.</span> <span class="toc-text">安装rabbitmq</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装依赖"><span class="toc-number">12.1.</span> <span class="toc-text">安装依赖 :</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装rabbitmq-1"><span class="toc-number">12.2.</span> <span class="toc-text">安装rabbitmq</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#zookeeper"><span class="toc-number">13.</span> <span class="toc-text">zookeeper</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis"><span class="toc-number">14.</span> <span class="toc-text">redis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#开启端口"><span class="toc-number">15.</span> <span class="toc-text">开启端口</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(/img/Linux2.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">MRS-SEVEN-X</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">centos 配置Java环境</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-01-14T16:00:00.000Z" title="发表于 2020-01-15 00:00:00">2020-01-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-04T03:43:43.899Z" title="更新于 2020-09-04 11:43:43">2020-09-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/">Linux</a></span></div><div class="meta-secondline"> </div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="解决yum命令无法连接镜像资源"><a href="#解决yum命令无法连接镜像资源" class="headerlink" title="解决yum命令无法连接镜像资源:"></a>解决yum命令无法连接镜像资源:</h1><pre><code>(1) cd /etc/sysconfig/network-scripts  进入该文件夹后，然后再ls一下，查看是否有ifcfg-ens33，有时是ifcfg-eth0
+(2) vi ifcfg-ens33 进入VI的一般模式，移动光标到ONBOOT=no
+(3) 按下&quot;i&quot;进入VI的编辑模式，把no删除改为yes</code></pre><h1 id="更换yum镜像"><a href="#更换yum镜像" class="headerlink" title="更换yum镜像"></a>更换yum镜像</h1><pre><code>1.首先备份/etc/yum.repos.d/CentOS-Base.repo
+  mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+2.wget http://mirrors.163.com/.help/CentOS6-Base-163.repo
+  mv CentOS6-Base-163.repo CentOS-Base.repo
+3.运行以下命令生成缓存
+  yum clean all
+  yum makecache
+4.yum install epel-release 
+EPEL(Extra Packages for Enterprise Linux)是由Fedora Special Interest Group维护的Enterprise Linux（RHEL、CentOS）中经 常用到的包。</code></pre><h1 id="同步时间"><a href="#同步时间" class="headerlink" title="同步时间"></a>同步时间</h1><pre><code>1、下载 ntpdate，用ntp来实现时间同步
+
+yum install -y ntpdate
+
+2、调整时区为上海，我也好神奇为什么是上海，也就是北京时间 + 8 区
+
+注：想改其他时区也可以去看看 / usr/share/zoneinfo 目录
+
+cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+3、使用 NTP 来同步时间
+
+ntpdate us.pool.ntp.org
+
+4、定时同步时间（每隔 10 分钟同步时钟）
+
+写一个文件到该路径
+
+echo &quot;*/10 * * * * /usr/sbin/ntpdate us.pool.ntp.org | logger -t NTP&quot; &gt;&gt; /tmp/crontab.bak
+
+启动定时任务
+
+crontab /tmp/crontab.bak
+
+5、然后我们来验证下时间
+
+date -R</code></pre><h1 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h1><pre><code>编辑 vim /etc/sysconfig/network-scripts/ifcfg-enp0s3
+
+(1).可以为BOOTPRTO（表示网卡配置静态还是动态IP地址）设置以下4种选项
+
+bootp：表示使用BOOTP协议。
+
+dhcp：表示使用DHCP协议动态获取IP地址。
+
+static：表示手工设置静态IP地址。
+
+（2）ONBOOT=yes
+
+表示启动系统时是否激活该网卡，yes表示激活，no表示不激活。
+
+systemctl restart network  (重启网络服务)
+
+配置固定ip
+bootproto=static
+onboot=yes
+
+在最后加上几行，IP地址、子网掩码、网关、dns服务器
+
+IPADDR=192.168.1.160
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1
+DNS1=119.29.29.29
+DNS2=8.8.8.8</code></pre><h1 id="解决ifconfig不能使用"><a href="#解决ifconfig不能使用" class="headerlink" title="解决ifconfig不能使用"></a>解决ifconfig不能使用</h1><pre><code>yum search ifconfig
+yum -y install net-tools</code></pre><h1 id="普通用户切换root"><a href="#普通用户切换root" class="headerlink" title="普通用户切换root"></a>普通用户切换root</h1><pre><code>su root</code></pre><h1 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h1><pre><code>1、查看firewall服务状态
+    systemctl status firewalld
+2、查看firewall的状态
+    firewall-cmd --state
+3、开启、重启、关闭、firewalld.service服务
+     开启: service firewalld start
+     重启: service firewalld restart
+     关闭:service firewalld stop
+4、查看防火墙规则
+    firewall-cmd --list-all
+5、查询、开放、关闭端口
+# 查询端口是否开放
+    firewall-cmd --query-port=8080/tcp
+# 开放80端口
+    firewall-cmd --permanent --add-port=80/tcp
+# 移除端口
+    firewall-cmd --permanent --remove-port=8080/tcp
+#重启防火墙(修改配置后要重启防火墙)
+    firewall-cmd --reload
+# 参数解释
+    1、firwall-cmd：是Linux提供的操作firewall的一个工具；
+    2、--permanent：表示设置为持久；
+    3、--add-port：标识添加的端口；
+CentOS 7.0默认使用的是firewall作为防火墙，这里改为iptables防火墙。
+
+1、关闭firewall：
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+systemctl mask firewalld.service
+
+2、安装iptables防火墙
+yum install iptables-services -y
+
+3.启动设置防火墙
+
+# systemctl enable iptables
+# systemctl start iptables
+
+4.查看防火墙状态
+
+systemctl status iptables
+
+5编辑防火墙，增加端口
+vi /etc/sysconfig/iptables #编辑防火墙配置文件
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT
+:wq! #保存退出
+
+3.重启配置，重启系统
+systemctl restart iptables.service #重启防火墙使配置生效
+systemctl enable iptables.service #设置防火墙开机启动</code></pre><h1 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h1><pre><code>安装ssh程序包
+打开系统命令行，输入以下命令下载包。
+
+yum install -y openssh-server
+等待几分钟就下载好了。
+
+启动ssh服务
+接下来我们运行以下命令使ssh服务可以长时间在线运行。
+
+启动ssh服务程序
+systemctl start sshd
+开机自启动
+systemctl enable sshd
+开启防火墙服务
+firewall-cmd --add-service=ftp/tcp --permanent
+firewall-cmd --add-service=http/tcp --permanent
+firewall-cmd --reload
+ 关闭运行的防火墙
+systemctl stop firewalld.service 关闭运行的防火墙</code></pre><h1 id="安装-配置jdk"><a href="#安装-配置jdk" class="headerlink" title="安装 配置jdk"></a>安装 配置jdk</h1><p>   1.安装</p>
+<pre><code>tar zxvf FileName.tar</code></pre><p>   2.配置</p>
+<pre><code>    vim /etc/profile
+    export JAVA_HOME=/opt/jdk1.8
+    export CLASSPATH=.:${JAVA_HOME}/jre/lib/rt.jar:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar
+    export PATH=$PATH:${JAVA_HOME}/bin
+
+通过 source /etc/profile 命令使更改的配置立即生效</code></pre><h1 id="安装mysql-注安装-yum-y-install-autoconf"><a href="#安装mysql-注安装-yum-y-install-autoconf" class="headerlink" title="安装mysql  注安装 yum -y install autoconf"></a>安装mysql  注安装 yum -y install autoconf</h1><p>   一、安装YUM Repo</p>
+<pre><code>1、由于CentOS 的yum源中没有mysql，需要到mysql的官网下载yum repo配置文件。
+下载命令：
+wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+2、然后进行repo的安装：
+rpm -ivh mysql57-community-release-el7-9.noarch.rpm
+执行完成后会在/etc/yum.repos.d/目录下生成两个repo文件mysql-community.repo mysql-community-source.repo</code></pre><p>   二、使用yum命令即可完成安装</p>
+<pre><code>注意：必须进入到 /etc/yum.repos.d/目录后再执行以下脚本
+1、安装命令：
+    yum install mysql-server
+2、启动msyql：
+    systemctl start mysqld #启动MySQL
+3、获取安装时的临时密码（在第一次登录时就是用这个密码）：
+    grep &apos;temporary password&apos; /var/log/mysqld.log
+4、倘若没有获取临时密码，则
+4.1、删除原来安装过的mysql残留的数据
+    rm -rf /var/lib/mysql
+4.2.再启动mysql
+    systemctl start mysqld #启动MySQL</code></pre><h1 id="使用本地文件安装mysql"><a href="#使用本地文件安装mysql" class="headerlink" title="使用本地文件安装mysql"></a>使用本地文件安装mysql</h1><pre><code>1.下载mysql Linux版  解压缩
+2.安装自动配置  yum -y install autoconf
+2.删除冲突依赖  rpm -qa | grep postfix   rpm -qa | grep mariadb
+3.rpm -ivh MySQL-client-5.6.46-1.el7.x86_64.rpm
+            MySQL-devel-5.6.46-1.el7.x86_64.rpm
+            MySQL-shared-5.6.46-1.el7.x86_64.rpm
+            MySQL-server-5.6.46-1.el7.x86_64.rpm
+            ...
+4.配置my.cnf文件  加载顺序:/etc/my.cnf /etc/mysql/my.cnf /usr/etc/my.cnf ~/.my.cnf
+5.service mysql start/stop
+6.systemctl enable mysqld
+配置环境变量
+export MYSQL_HOME=/usr/local/mysql
+export PATH=$PATH:${MYSQL_HOME}/bin
+
+设置密码 :UPDATE user SET password=PASSWORD(&apos;123456&apos;) WHERE user=&apos;root&apos;;
+   权限: FLUSH PRIVILEGES;</code></pre><h1 id="安装rabbitmq"><a href="#安装rabbitmq" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h1><h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖 :"></a>安装依赖 :</h2><pre><code>1.安装依赖 :yum -y install gcc glibc-devel make ncurses-devel openssl-devel xmlto perl wget gtk2-devel binutils-devel
+2.解压缩 : tar -zxvf otp_src_22.0.tar.gz
+3.创建即将安装的目录  mkdir ../erlang
+4.配置安装路径:  ./configure --prefix=/usr/local/erlang
+5.安装: make install
+6.配置环境变量 : vim /etc/profile
+    export PATH=$PATH:/opt/erlang/bin
+7.重启配置文件 : source /etc/profile
+rpm -Uvh https://mirrors.aliyun.com/centos/7.6.1810/extras/x86_64/Packages/epel-release-7-11.noarch.rpm
+yum install erlan
+
+export PATH=$PATH:/opt/rabbotMQServer/rabbitmq-server-3.7.23/scripts</code></pre><h2 id="安装rabbitmq-1"><a href="#安装rabbitmq-1" class="headerlink" title="安装rabbitmq"></a>安装rabbitmq</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1.  解压</span><br><span class="line">    xz -d rabbitmq-server-generic-unix-3.6.10.tar.xz</span><br><span class="line">    tar xvf rabbitmq-server-generic-unix-3.6.10.tar</span><br><span class="line">2.编辑</span><br><span class="line">    vi &#x2F;etc&#x2F;profile</span><br><span class="line">    export PATH&#x3D;$PATH:&#x2F;usr&#x2F;erlang&#x2F;bin</span><br><span class="line">    export PATH&#x3D;$PATH:&#x2F;usr&#x2F;rabbitmq&#x2F;sbin</span><br><span class="line">3.后台启动</span><br><span class="line">    rabbitmq-server -detached</span><br><span class="line">4.启动web监控</span><br><span class="line">    rabbitmq-plugins enable rabbitmq_management</span><br><span class="line">5.打开端口</span><br><span class="line">  firewall-cmd --permanent --add-port&#x3D;15672&#x2F;tcp;</span><br><span class="line">  firewall-cmd --reload;</span><br><span class="line">  </span><br><span class="line">--创建用户名和密码</span><br><span class="line">1.rabbitmqctl add_user root 123456</span><br><span class="line">--赋予权限最高权限</span><br><span class="line">2.rabbitmqctl set_user_tags root administrator</span><br><span class="line">3.rabbitmqctl set_permissions -p &#x2F; root &quot;.&quot; &quot;.&quot; &quot;.*&quot;</span><br></pre></td></tr></table></figure>
+<h1 id="zookeeper"><a href="#zookeeper" class="headerlink" title="zookeeper"></a>zookeeper</h1><pre><code>1.下载Linux zookeeper
+2.解压文件
+    tar zxvf fieName
+3.修改Linux环境变量文件
+    vim /etc/profile
+    尾部添加:
+        export ZOOKEEPER_HOME=/usr/software/zookeeper
+        export PATH=$ZOOKEEPER_HOME/bin:$PATH
+4.完成  source /etc/profile 使修改的环境变量生效
+5.启动  在bin目录下 zkServer.sh start</code></pre><h1 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h1><pre><code>1.下载
+wget http://download.redis.io/releases/redis-4.0.8.tar.gz
+2.  进行编译  可能需要安装 make gcc
+    {
+    安装gcc yum/apt install gcc
+    安装make  apt install make
+    }
+    make
+    cd src
+    make install PREFIX=/usr/local/redis(安装目录)
+
+#配置redis为后台启动
+　　vi /usr/local/redis/etc/redis.conf //将daemonize no 改成daemonize yes
+#解决不能连接  进入redis.conf 主调 bind  修改protect-mode no
+#添加密码
+去掉注释 requirepass ****(密码)</code></pre><h1 id="开启端口"><a href="#开启端口" class="headerlink" title="开启端口"></a>开启端口</h1><p>   mysql3306</p>
+<pre><code>firewall-cmd --zone=public --add-port=3306/tcp --permanent
+firewall-cmd --reload</code></pre></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">MRS-SEVEN-X</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xiansir.github.io/2020/01/15/Linux/LinuxCentos/">https://xiansir.github.io/2020/01/15/Linux/LinuxCentos/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xiansir.github.io" target="_blank">MRS-SEVEN-X</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post_share"><div class="social-share" data-image="/img/Linux2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/01/23/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><img class="prev-cover" src="/img/wen6.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Win/Linux常用命令</div></div></a></div><div class="next-post pull-right"><a href="/2020/01/05/Linux/Linux/"><img class="next-cover" src="/img/linux.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Linux简单介绍及常用命令</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/05/16/Linux/DockerCentos/" title="docker 安装教程简介"><img class="cover" src="/img/docker.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-16</div><div class="title">docker 安装教程简介</div></div></a></div><div><a href="/2020/06/09/Linux/Shell/" title="Linux 安装软件环境shell脚本示例"><img class="cover" src="/img/bat.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-06-09</div><div class="title">Linux 安装软件环境shell脚本示例</div></div></a></div><div><a href="/2020/09/04/Linux/LinuxUbantu/" title="ubabtu 配置Java环境"><img class="cover" src="/img/Linux2.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-04</div><div class="title">ubabtu 配置Java环境</div></div></a></div><div><a href="/2020/01/05/Linux/Linux/" title="Linux简单介绍及常用命令"><img class="cover" src="/img/linux.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-05</div><div class="title">Linux简单介绍及常用命令</div></div></a></div></div></div></article></main><footer id="footer" style="background-image: url(/img/Linux2.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2020 By MRS-SEVEN-X</div><div class="framework-info"><span>框架 </span><a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my blog!</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script></div></body></html>
